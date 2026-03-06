@@ -2,7 +2,7 @@
 
 🚀 **Enterprise Hybrid Encryption Library for Secure FinTech Application/Api**
 
-`FinTechEncryption` is a lightweight .NET library that provides **secure data encryption and decryption using Hybrid Cryptography**.
+`FintechEncryption` is a lightweight .NET library that provides **secure data encryption and decryption using Hybrid Cryptography**.
 
 It combines:
 
@@ -270,4 +270,5 @@ api payload encryption
 ```
 
 ---
+
 
