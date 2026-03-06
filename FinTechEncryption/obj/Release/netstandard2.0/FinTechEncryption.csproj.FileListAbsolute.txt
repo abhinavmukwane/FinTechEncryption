@@ -1,0 +1,10 @@
+C:\Users\abhinavm\source\repos\FinTechEncryption\bin\Release\netstandard2.0\FinTechEncryption.deps.json
+C:\Users\abhinavm\source\repos\FinTechEncryption\bin\Release\netstandard2.0\FinTechEncryption.dll
+C:\Users\abhinavm\source\repos\FinTechEncryption\bin\Release\netstandard2.0\FinTechEncryption.pdb
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.csproj.AssemblyReference.cache
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.AssemblyInfoInputs.cache
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.AssemblyInfo.cs
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.csproj.CoreCompileInputs.cache
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.dll
+C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\netstandard2.0\FinTechEncryption.pdb
