@@ -215,6 +215,44 @@ The payload is encrypted before transmission to ensure **high-level API security
 
 ---
 
+## ⚠️ Exception Handling
+
+`FinTechEncryption` uses a custom exception **`EncryptionException`** for all encryption and decryption related errors.  
+Applications using the library should catch this exception to safely handle failures.
+
+### Example Usage
+
+```csharp
+using FinTechEncryption;
+
+try
+{
+    var encryptionService = new EncryptionService();
+
+    string encrypted = encryptionService.EncryptData(
+        jsonPayload,
+        senderPrivateKey,
+        receiverPublicKey
+    );
+
+    var decryptionService = new DecryptionService();
+
+    string decrypted = decryptionService.DecryptData(
+        encrypted,
+        receiverPrivateKey,
+        senderPublicKey
+    );
+
+    Console.WriteLine("Decrypted Data: " + decrypted);
+}
+catch (EncryptionException ex)
+{
+    Console.WriteLine("Encryption operation failed: " + ex.Message);
+}
+```
+
+---
+
 # 🚀 When To Use This Library
 
 Use `FintechEncryption` when building:
@@ -270,6 +308,7 @@ api payload encryption
 ```
 
 ---
+
 
 
 
