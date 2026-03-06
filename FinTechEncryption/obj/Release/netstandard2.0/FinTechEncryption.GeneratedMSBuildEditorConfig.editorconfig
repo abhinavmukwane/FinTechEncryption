@@ -1,6 +1,6 @@
 is_global = true
 build_property.RootNamespace = FinTechEncryption
-build_property.ProjectDir = C:\Users\abhinavm\source\repos\FinTechEncryption\
+build_property.ProjectDir = D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTUseWindowsUIXamlProjections = false

@@ -7,7 +7,7 @@
 	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	  <PackageId>FintechEncryption</PackageId>
 	  <Version>1.0.0</Version>
-	  <Authors>@bhi9m</Authors>
+	  <Authors>abhinavmukwane</Authors>
 	  <Company>OpenSource</Company>
 	  <Description>
 		  Hybrid Encryption Library (AES256 + RSA + Digital Signature) for FinTech Applications
@@ -17,13 +17,14 @@
 	  </PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <RepositoryUrl>
-		  https://github.com/abhinavmukwane
+		  https://github.com/abhinavmukwane/FinTechEncryption
 	  </RepositoryUrl>
-
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+	  <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,3 +10,15 @@ C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\net6.0\FinTechEncry
 C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\net6.0\refint\FinTechEncryption.dll
 C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.pdb
 C:\Users\abhinavm\source\repos\FinTechEncryption\obj\Release\net6.0\ref\FinTechEncryption.dll
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\bin\Release\net6.0\FinTechEncryption.deps.json
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\bin\Release\net6.0\FinTechEncryption.dll
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\bin\Release\net6.0\FinTechEncryption.pdb
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.csproj.AssemblyReference.cache
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.GeneratedMSBuildEditorConfig.editorconfig
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.AssemblyInfoInputs.cache
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.AssemblyInfo.cs
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.csproj.CoreCompileInputs.cache
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.dll
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\refint\FinTechEncryption.dll
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\FinTechEncryption.pdb
+D:\C DAC\Portfolio\FinTechEncryption\FinTechEncryption\obj\Release\net6.0\ref\FinTechEncryption.dll
