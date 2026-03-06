@@ -139,7 +139,7 @@ System A encrypts the payload using:
 ```csharp
 var encryptionService = new EncryptionService();
 
-string encryptedPayload = encryptionService.EncryptApiData(
+string encryptedPayload = encryptionService.EncryptData(
     plainTextData,
     systemAPrivateKey,
     systemBPublicKey
@@ -270,5 +270,6 @@ api payload encryption
 ```
 
 ---
+
 
 
