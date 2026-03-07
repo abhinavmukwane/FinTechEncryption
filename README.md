@@ -227,14 +227,6 @@ using FinTechEncryption;
 
 try
 {
-    var encryptionService = new EncryptionService();
-
-    string encrypted = encryptionService.EncryptData(
-        jsonPayload,
-        senderPrivateKey,
-        receiverPublicKey
-    );
-
     var decryptionService = new DecryptionService();
 
     string decrypted = decryptionService.DecryptData(
@@ -248,6 +240,10 @@ try
 catch (EncryptionException ex)
 {
     Console.WriteLine("Encryption operation failed: " + ex.Message);
+}
+catch(Exception e)
+{
+    Console.WriteLine("Exception Error: " + e.Message);
 }
 ```
 
@@ -308,6 +304,7 @@ api payload encryption
 ```
 
 ---
+
 
 
 
