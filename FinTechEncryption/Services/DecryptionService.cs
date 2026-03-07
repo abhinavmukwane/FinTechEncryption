@@ -15,31 +15,55 @@ namespace FinTechEncryption.Services
     {
         public string DecryptData(string encryptedText, string receiverPrivateKey, string senderPublicKey)
         {
-            string combined = Encoding.UTF8.GetString(Convert.FromBase64String(encryptedText));
+            try
+            {
+                if (string.IsNullOrWhiteSpace(encryptedText))
+                throw new EncryptionException("Encrypted text cannot be null or empty.");
 
-            var parts = combined.Split(':');
-            if (parts.Length != 3)
-                throw new Exception("Invalid encrypted format");
+                if (string.IsNullOrWhiteSpace(receiverPrivateKey))
+                    throw new EncryptionException("Receiver private key is required.");
 
-            string encHeader = parts[0];
-            string encBody = parts[1];
-            string signature = parts[2];
+                if (string.IsNullOrWhiteSpace(senderPublicKey))
+                    throw new EncryptionException("Sender public key is required.");
 
-            // 1. Decrypt AES key using receiver PRIVATE key
-            string aesKey = DecryptRSA(encHeader, receiverPrivateKey);
+                string combined = Encoding.UTF8.GetString(Convert.FromBase64String(encryptedText));
+
+                var parts = combined.Split(':');
+                if (parts.Length != 3)
+                    throw new EncryptionException("Invalid encrypted payload format.");
+
+                string encHeader = parts[0];
+                string encBody = parts[1];
+                string signature = parts[2];
+
+                // 1. Decrypt AES key using receiver PRIVATE key
+                string aesKey = DecryptRSA(encHeader, receiverPrivateKey);
 
 
-            byte[] keyBytes = Encoding.UTF8.GetBytes(aesKey);
-            byte[] iv = keyBytes.Take(12).ToArray();
+                byte[] keyBytes = Encoding.UTF8.GetBytes(aesKey);
+                byte[] iv = keyBytes.Take(12).ToArray();
 
-            // 2. Verify signature using sender PUBLIC key
-            if (!VerifySignature(encBody, signature, senderPublicKey))
-                throw new Exception("Digital signature verification failed");
+                // 2. Verify signature using sender PUBLIC key
+                if (!VerifySignature(encBody, signature, senderPublicKey))
+                    throw new EncryptionException("Digital signature verification failed.");
 
-            // 3. AES GCM decrypt body
-            byte[] decryptedBytes = DecryptAESGCM(Convert.FromBase64String(encBody), keyBytes, iv);
+                // 3. AES GCM decrypt body
+                byte[] decryptedBytes = DecryptAESGCM(Convert.FromBase64String(encBody), keyBytes, iv);
 
-            return Encoding.UTF8.GetString(decryptedBytes);
+                return Encoding.UTF8.GetString(decryptedBytes);
+            }
+            catch (EncryptionException)
+            {
+                throw;
+            }
+            catch (FormatException ex)
+            {
+                throw new EncryptionException("Invalid Base64 encrypted payload.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("Decryption failed due to an unexpected error.", ex);
+            }
         }
 
         private byte[] DecryptAESGCM(byte[] cipherBytes, byte[] key, byte[] iv)
@@ -57,27 +81,41 @@ namespace FinTechEncryption.Services
 
         private string DecryptRSA(string encryptedBase64, string privateKeyBase64)
         {
-            var keyInfo = PrivateKeyInfo.GetInstance(Convert.FromBase64String(privateKeyBase64));
-            var privateKey = PrivateKeyFactory.CreateKey(keyInfo);
+            try
+            {
+                var keyInfo = PrivateKeyInfo.GetInstance(Convert.FromBase64String(privateKeyBase64));
+                var privateKey = PrivateKeyFactory.CreateKey(keyInfo);
 
-            var engine = new OaepEncoding(new RsaEngine());
-            engine.Init(false, privateKey);
+                var engine = new OaepEncoding(new RsaEngine());
+                engine.Init(false, privateKey);
 
-            byte[] cipherBytes = Convert.FromBase64String(encryptedBase64);
-            return Encoding.UTF8.GetString(engine.ProcessBlock(cipherBytes, 0, cipherBytes.Length));
+                byte[] cipherBytes = Convert.FromBase64String(encryptedBase64);
+                return Encoding.UTF8.GetString(engine.ProcessBlock(cipherBytes, 0, cipherBytes.Length));
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("RSA decryption failed.", ex);
+            }
         }
 
         private bool VerifySignature(string data, string signatureBase64, string publicKeyBase64)
         {
-            var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyBase64));
+            try
+            {
+                var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyBase64));
 
-            var verifier = SignerUtilities.GetSigner("SHA256withRSA");
-            verifier.Init(false, publicKey);
+                var verifier = SignerUtilities.GetSigner("SHA256withRSA");
+                verifier.Init(false, publicKey);
 
-            var bytes = Encoding.UTF8.GetBytes(data);
-            verifier.BlockUpdate(bytes, 0, bytes.Length);
+                var bytes = Encoding.UTF8.GetBytes(data);
+                verifier.BlockUpdate(bytes, 0, bytes.Length);
 
-            return verifier.VerifySignature(Convert.FromBase64String(signatureBase64));
+                return verifier.VerifySignature(Convert.FromBase64String(signatureBase64));
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("Signature verification failed.", ex);
+            }
         }
     }
 }

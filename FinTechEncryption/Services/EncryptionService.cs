@@ -15,33 +15,64 @@ namespace FinTechEncryption.Services
     {
         public string EncryptData(string plainText, string senderPrivateKey, string receiverPublicKey)
         {
-            string aesKey = Guid.NewGuid().ToString("N").Substring(0, 32);
-            byte[] keyBytes = Encoding.UTF8.GetBytes(aesKey);
-            byte[] iv = keyBytes.Take(12).ToArray();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(plainText))
+                    throw new EncryptionException("Plain text cannot be null or empty.");
 
-            string encryptedBody = Convert.ToBase64String(EncryptAESGCM(plainText, keyBytes, iv));
+                if (string.IsNullOrWhiteSpace(senderPrivateKey))
+                    throw new EncryptionException("Sender private key is required.");
 
-            string signature = SignData(encryptedBody, senderPrivateKey);
+                if (string.IsNullOrWhiteSpace(receiverPublicKey))
+                    throw new EncryptionException("Receiver public key is required.");
 
-            string encryptedHeader = EncryptRSA(aesKey, receiverPublicKey);
+                string aesKey = Guid.NewGuid().ToString("N").Substring(0, 32);
+                byte[] keyBytes = Encoding.UTF8.GetBytes(aesKey);
+                byte[] iv = keyBytes.Take(12).ToArray();
 
-            string combined = $"{encryptedHeader}:{encryptedBody}:{signature}";
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(combined));
+                string encryptedBody = Convert.ToBase64String(EncryptAESGCM(plainText, keyBytes, iv));
+
+                string signature = SignData(encryptedBody, senderPrivateKey);
+
+                string encryptedHeader = EncryptRSA(aesKey, receiverPublicKey);
+
+                string combined = $"{encryptedHeader}:{encryptedBody}:{signature}";
+                return Convert.ToBase64String(Encoding.UTF8.GetBytes(combined));
+            }
+            catch (EncryptionException)
+            {
+                throw;
+            }
+            catch (FormatException ex)
+            {
+                throw new EncryptionException("Invalid key format provided.", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("Encryption failed due to an unexpected error.", ex);
+            }
         }
 
         private byte[] EncryptAESGCM(string data, byte[] key, byte[] iv)
         {
-            var cipher = new GcmBlockCipher(new AesEngine());
-            var parameters = new AeadParameters(new KeyParameter(key), 128, iv);
-            cipher.Init(true, parameters);
+            try
+            {
+                var cipher = new GcmBlockCipher(new AesEngine());
+                var parameters = new AeadParameters(new KeyParameter(key), 128, iv);
+                cipher.Init(true, parameters);
 
-            byte[] input = Encoding.UTF8.GetBytes(data);
-            byte[] output = new byte[cipher.GetOutputSize(input.Length)];
+                byte[] input = Encoding.UTF8.GetBytes(data);
+                byte[] output = new byte[cipher.GetOutputSize(input.Length)];
 
-            int len = cipher.ProcessBytes(input, 0, input.Length, output, 0);
-            cipher.DoFinal(output, len);
+                int len = cipher.ProcessBytes(input, 0, input.Length, output, 0);
+                cipher.DoFinal(output, len);
 
-            return output;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("AES encryption failed.", ex);
+            }
         }
 
         private string SignData(string data, string privateKeyBase64)
@@ -60,14 +91,21 @@ namespace FinTechEncryption.Services
 
         private string EncryptRSA(string text, string publicKeyBase64)
         {
-            var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyBase64));
+            try
+            {
+                var publicKey = PublicKeyFactory.CreateKey(Convert.FromBase64String(publicKeyBase64));
 
-            var engine = new OaepEncoding(new RsaEngine());
-            engine.Init(true, publicKey);
+                var engine = new OaepEncoding(new RsaEngine());
+                engine.Init(true, publicKey);
 
-            byte[] input = Encoding.UTF8.GetBytes(text);
+                byte[] input = Encoding.UTF8.GetBytes(text);
 
-            return Convert.ToBase64String(engine.ProcessBlock(input, 0, input.Length));
+                return Convert.ToBase64String(engine.ProcessBlock(input, 0, input.Length));
+            }
+            catch (Exception ex)
+            {
+                throw new EncryptionException("RSA encryption failed.", ex);
+            }
         }
     }
 }
